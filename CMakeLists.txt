@@ -598,6 +598,10 @@ else()
   set(INTERN_BUILD_ATEN_OPS ON)
 endif()
 
+if(NOT DEFINED USE_BLAS)
+  set(USE_BLAS ON)
+endif()
+
 # BUILD_CAFFE2_MOBILE is the master switch to choose between libcaffe2 v.s. libtorch mobile build.
 # When it's enabled it builds original libcaffe2 mobile library without ATen/TH ops nor TorchScript support;
 # When it's disabled it builds libtorch mobile library, which contains ATen/TH ops and native support for
@@ -618,7 +622,11 @@ if(INTERN_BUILD_MOBILE AND NOT BUILD_CAFFE2_MOBILE)
   set(USE_FBGEMM OFF)
   set(USE_QNNPACK OFF)
   set(INTERN_DISABLE_ONNX ON)
-  set(INTERN_USE_EIGEN_BLAS ON)
+  if(USE_BLAS)
+    set(INTERN_USE_EIGEN_BLAS ON)
+  else()
+    set(INTERN_USE_EIGEN_BLAS OFF)
+  endif()
   # Disable developing mobile interpreter for actual mobile build.
   # Enable it elsewhere to capture build error.
   set(INTERN_DISABLE_MOBILE_INTERP ON)
