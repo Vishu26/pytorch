@@ -107,8 +107,7 @@ class DTypeConfig:
 
 class BackendConfig:
     # TODO: refer to NativeBackendConfig once that is implemented
-    """
-    Config that defines the set of patterns that can be quantized on a given backend, and how reference
+    """Config that defines the set of patterns that can be quantized on a given backend, and how reference
     quantized models can be produced from these patterns.
 
     A pattern in this context refers to a module, a functional, an operator, or a directed acyclic graph
@@ -149,6 +148,7 @@ class BackendConfig:
         backend_config = BackendConfig("my_backend") \
             .set_backend_pattern_config(linear_config) \
             .set_backend_pattern_config(conv_relu_config)
+
     """
     def __init__(self, name: str = ""):
         self.name = name
@@ -185,6 +185,7 @@ class BackendConfig:
 
             "name": the name of the target backend
             "configs": a list of dictionaries that each represents a `BackendPatternConfig`
+
         """
         conf = cls(backend_config_dict.get(NAME_DICT_KEY, ""))
         for d in backend_config_dict.get(CONFIGS_DICT_KEY, []):
@@ -213,16 +214,17 @@ class BackendPatternConfig:
 
     The user can configure how a operator pattern graph is handled on a given backend using the following methods:
         `set_observation_type`: sets how observers should be inserted for this pattern.
-            See :class:`~torch.ao.quantization.backend_config.ObservationType`
+        See :class:`~torch.ao.quantization.backend_config.ObservationType`
         `add_dtype_config`: add a set of supported data types for this pattern
         `set_root_module`: sets the module that represents the root for this pattern
         `set_qat_module`: sets the module that represents the QAT implementation for this pattern
         `set_reference_quantized_module`: sets the module that represents the reference quantized
-            implementation for this pattern's root module.
+        implementation for this pattern's root module.
         `set_fused_module`: sets the module that represents the fused implementation for this pattern
         `set_fuser_method`: sets the function that specifies how to fuse the pattern for this pattern
 
     For a detailed example usage, see :class:`~torch.ao.quantization.backend_config.BackendConfig`.
+
     """
     def __init__(self, pattern: Pattern):
         self.pattern = pattern
@@ -337,14 +339,15 @@ class BackendPatternConfig:
 
             "pattern": the pattern being configured
             "observation_type": the :class:`~torch.ao.quantization.backend_config.ObservationType` that specifies how
-                observers should be inserted for this pattern
+            observers should be inserted for this pattern
             "dtype_configs": a list of dictionaries that represents :class:`~torch.ao.quantization.backend_config.DTypeConfig`s
             "root_module": a :class:`torch.nn.Module` that represents the root for this pattern
             "qat_module": a :class:`torch.nn.Module` that represents the QAT implementation for this pattern
             "reference_quantized_module": a :class:`torch.nn.Module` that represents the reference quantized
-                implementation for this pattern's root module.
+            implementation for this pattern's root module.
             "fused_module": a :class:`torch.nn.Module` that represents the fused implementation for this pattern
             "fuser_method": a function that specifies how to fuse the pattern for this pattern
+
         """
         def _get_dtype_config(obj: Any) -> DTypeConfig:
             """
